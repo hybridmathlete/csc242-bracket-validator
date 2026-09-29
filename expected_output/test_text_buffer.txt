@@ -1,0 +1,56 @@
+CSC 242 Group 2 - TextBuffer Test Driver
+
+==============================
+New buffer
+==============================
+Expected line count: 0 | Actual: 0
+Expected str: (empty) | Actual: (empty)
+
+==============================
+load_text
+==============================
+Expected line count: 3 | Actual: 3
+Expected get_line(1): first | Actual: first
+Expected get_line(3): third | Actual: third
+Expected get_line(0): None | Actual: None
+Expected get_line(4): None | Actual: None
+Expected get_line(-1): None | Actual: None
+
+==============================
+load_text replaces old contents
+==============================
+Expected line count: 1 | Actual: 1
+Expected get_line(1): only line | Actual: only line
+
+==============================
+load_text special cases
+==============================
+Trailing newline -- Expected line count: 2 | Actual: 2
+Empty string -- Expected line count: 0 | Actual: 0
+Blank middle line -- Expected line count: 3 | Actual: 3
+Expected get_line(2): '' | Actual: ''
+
+==============================
+add_line
+==============================
+Expected line count: 2 | Actual: 2
+Expected get_line(2): + 2) | Actual: + 2)
+Expected get_lines().get(0): x = (1 | Actual: x = (1
+
+==============================
+load_file
+==============================
+Expected load_file(samples/mismatch.py): True | Actual: True
+Expected line count: 2 | Actual: 2
+Expected load_file(no_such_file.txt): False | Actual: False
+Buffer unchanged after failed load -- Expected line count: 2 | Actual: 2
+
+==============================
+__str__
+==============================
+Expected:
+  1 | def f(x):
+  2 |     return [x * (2 + 3]
+Actual:
+  1 | def f(x):
+  2 |     return [x * (2 + 3]

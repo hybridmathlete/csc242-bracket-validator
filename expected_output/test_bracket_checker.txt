@@ -1,0 +1,73 @@
+CSC 242 Group 2 - Bracket Checker Test Driver
+
+==============================
+Outcome 1: Balanced
+==============================
+Input lines: ['(a[b]{c})']
+  Expected: PASS - All brackets are balanced
+  Actual:   PASS - All brackets are balanced
+Input lines: ['no brackets here']
+  Expected: PASS - All brackets are balanced
+  Actual:   PASS - All brackets are balanced
+Input lines: []
+  Expected: PASS - All brackets are balanced
+  Actual:   PASS - All brackets are balanced
+Input lines: ['def f(x):', '    return [x, {1: (2)}]']
+  Expected: PASS - All brackets are balanced
+  Actual:   PASS - All brackets are balanced
+Input lines: ['()']
+  Expected: PASS - All brackets are balanced
+  Actual:   PASS - All brackets are balanced
+Balanced result -- Expected line_number, column: 0, 0 | Actual: 0, 0
+
+==============================
+Outcome 2: Mismatch
+==============================
+Input lines: ['(]']
+  Expected: FAIL - Mismatch at line 1, col 2: expected ')' but found ']'
+  Actual:   FAIL - Mismatch at line 1, col 2: expected ')' but found ']'
+Input lines: ['{[}]']
+  Expected: FAIL - Mismatch at line 1, col 3: expected ']' but found '}'
+  Actual:   FAIL - Mismatch at line 1, col 3: expected ']' but found '}'
+Input lines: ['x = [1, (2', ', 3]']
+  Expected: FAIL - Mismatch at line 2, col 4: expected ')' but found ']'
+  Actual:   FAIL - Mismatch at line 2, col 4: expected ')' but found ']'
+Input lines: ['def f(x):', '    return [x * (2 + 3]']
+  Expected: FAIL - Mismatch at line 2, col 23: expected ')' but found ']'
+  Actual:   FAIL - Mismatch at line 2, col 23: expected ')' but found ']'
+Expected is_balanced: False | Actual: False
+Expected line_number, column: 2, 23 | Actual: 2, 23
+
+==============================
+Outcome 3: Unexpected closer
+==============================
+Input lines: ['a)']
+  Expected: FAIL - Unexpected ')' at line 1, col 2: no bracket is open
+  Actual:   FAIL - Unexpected ')' at line 1, col 2: no bracket is open
+Input lines: ['()', ']']
+  Expected: FAIL - Unexpected ']' at line 2, col 1: no bracket is open
+  Actual:   FAIL - Unexpected ']' at line 2, col 1: no bracket is open
+Input lines: ['total = (4 + 5))']
+  Expected: FAIL - Unexpected ')' at line 1, col 16: no bracket is open
+  Actual:   FAIL - Unexpected ')' at line 1, col 16: no bracket is open
+
+==============================
+Outcome 4: Unclosed opener
+==============================
+Input lines: ['{a', 'b']
+  Expected: FAIL - Unclosed '{' opened at line 1, col 1
+  Actual:   FAIL - Unclosed '{' opened at line 1, col 1
+Input lines: ['((', ')']
+  Expected: FAIL - Unclosed '(' opened at line 1, col 1
+  Actual:   FAIL - Unclosed '(' opened at line 1, col 1
+Input lines: ['[ok]', 'x = ( [ ]']
+  Expected: FAIL - Unclosed '(' opened at line 2, col 5
+  Actual:   FAIL - Unclosed '(' opened at line 2, col 5
+Expected line_number, column: 2, 5 | Actual: 2, 5
+
+==============================
+First problem wins
+==============================
+Input lines: [')', '(]']
+  Expected: FAIL - Unexpected ')' at line 1, col 1: no bracket is open
+  Actual:   FAIL - Unexpected ')' at line 1, col 1: no bracket is open
