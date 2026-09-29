@@ -1,6 +1,6 @@
 """
 Author: AU75ZB
-Date: 9/29/2026 
+Date: 9/29/2026
 
 Purpose: Defines CheckResult, the shared result object for the Bracket
 & Syntax Validator. The bracket checker (bracket_checker.py) creates a
@@ -9,7 +9,7 @@ CheckResult for every check it runs, the session history
 (validator_console.py) prints them. Because all three modules agree on
 the same four public fields -- is_balanced, line_number, column, and
 message -- each group member can build their module independently and
-the pieces still fit together. This file is the agreement that lets three 
+the pieces still fit together. This file is the agreement that lets three
 people's code connect.
 
 Input: Four values supplied by check_brackets() when a check finishes:
