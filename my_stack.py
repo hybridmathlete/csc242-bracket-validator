@@ -89,16 +89,16 @@ class MyStack(MyLinkedList):
         '''
         Precondition: none.
         Postcondition: Returns True if the stack has no elements, False
-        otherwise. Reuse the correct inherited method -- do not write
-        new emptiness logic.
+        otherwise. Delegates to the inherited is_empty(), so emptiness
+        is defined in one place.
         '''
         return self.is_empty()
 
     def push(self, item):
         '''
         Precondition: item is the value to add.
-        Postcondition: item becomes the new TOP of the stack. TOP =
-        FRONT of the linked list. Do NOT use add_last.
+        Postcondition: item becomes the new TOP of the stack. TOP is the
+        FRONT of the linked list, so push uses add_first, which is O(1).
         '''
         self.add_first(item)
 
@@ -115,7 +115,8 @@ class MyStack(MyLinkedList):
         '''
         Precondition: the stack is not empty.
         Postcondition: Returns the TOP element without modifying the
-        stack. Reuse the correct inherited accessor.
+        stack, by reading the FRONT of the list with the inherited
+        get_first().
         '''
         return self.get_first()
 
@@ -123,7 +124,7 @@ class MyStack(MyLinkedList):
         '''
         Precondition: none.
         Postcondition: Returns the number of elements currently in the
-        stack. Reuse inherited count logic.
+        stack by delegating to the inherited MyLinkedList count.
         '''
         return super().get_count()
 
@@ -132,11 +133,10 @@ class MyStack(MyLinkedList):
         Precondition: none.
         Postcondition: Returns "EMPTY STACK" if the stack has no
         elements. Otherwise returns each value from TOP to BOTTOM, one
-        value per line. Do NOT access node references directly and do
-        NOT call MyLinkedList's own __str__ -- build this using only
-        push/pop/get_top/is_empty_stack (a temporary MyStack can hold
-        items during the traversal so you can restore the original
-        order afterward).
+        value per line. Built using only the stack interface (push, pop,
+        get_top, is_empty_stack): values are moved into a temporary
+        MyStack while being read, then pushed back, so the stack is left
+        exactly as it was.
         '''
         if self.is_empty_stack():
             return "EMPTY STACK"

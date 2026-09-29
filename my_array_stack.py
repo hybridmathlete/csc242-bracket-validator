@@ -56,8 +56,8 @@ class MyArrayStack(MyArrayList):
         '''
         Precondition: capacity, if given, is a positive integer.
         Postcondition: Creates an empty MyArrayStack with the given
-        starting capacity (default 4). Reuse MyArrayList's constructor --
-        no additional state is needed.
+        starting capacity (default 4) by calling MyArrayList's
+        constructor; the stack needs no state of its own.
         '''
         super().__init__(capacity=capacity)
 
@@ -65,18 +65,18 @@ class MyArrayStack(MyArrayList):
         '''
         Precondition: none.
         Postcondition: Returns True if the stack has no elements, False
-        otherwise. Reuse the correct inherited method -- do not write
-        new emptiness logic.
+        otherwise. Delegates to the inherited is_empty(), so emptiness
+        is defined in one place.
         '''
         return self.is_empty()
 
     def push(self, item):
         '''
         Precondition: item is the value to add.
-        Postcondition: item becomes the new TOP of the stack. TOP =
-        END (last valid index) of the backing list. Must go through
-        MyArrayList's own append() -- do NOT touch self._array
-        directly.
+        Postcondition: item becomes the new TOP of the stack. TOP is the
+        END (last valid index) of the backing list, so push uses the
+        inherited append(), which is O(1) amortized and doubles capacity
+        when the list is full.
         '''
         self.append(item)
 
@@ -85,8 +85,9 @@ class MyArrayStack(MyArrayList):
         Precondition: none.
         Postcondition: If the stack is not empty, the TOP element is
         removed (does not return a value). If the stack is empty, it is
-        left unchanged. TOP = END of the backing list -- use
-        delete_at(get_count() - 1), NOT index 0.
+        left unchanged. Removes the END of the backing list with
+        delete_at(get_count() - 1), which is O(1) because no elements
+        shift.
         '''
         self.delete_at(self.get_count() - 1)
 
@@ -94,8 +95,8 @@ class MyArrayStack(MyArrayList):
         '''
         Precondition: the stack is not empty.
         Postcondition: Returns the TOP element without modifying the
-        stack. Reuse the correct inherited accessor at the END of the
-        backing list.
+        stack, by reading the END of the backing list with the inherited
+        get(get_count() - 1).
         '''
         return self.get(self.get_count() - 1)
 
@@ -103,7 +104,7 @@ class MyArrayStack(MyArrayList):
         '''
         Precondition: none.
         Postcondition: Returns the number of elements currently in the
-        stack. Reuse inherited count logic.
+        stack by delegating to the inherited MyArrayList count.
         '''
         return super().get_count()
 
@@ -112,9 +113,9 @@ class MyArrayStack(MyArrayList):
         Precondition: none.
         Postcondition: Returns "EMPTY STACK" if the stack has no
         elements. Otherwise returns each value from TOP to BOTTOM, one
-        value per line. Do NOT access self._array directly -- build
-        this using only get_count() and get() (both inherited public
-        methods from MyArrayList).
+        value per line, built from the inherited get_count() and get()
+        by reading from the last index down to 0, so the backing array
+        is never accessed directly.
         '''
         if self.get_count() == 0:
             return "EMPTY STACK"
