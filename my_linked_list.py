@@ -1,6 +1,6 @@
 """
 Author: AU75ZB
-Date: 9/1/2026 (Lab 3); updated 9/21/2026 for Lab 6
+Date: 9/1/2026 (Lab 3); updated 9/21/2026 for Lab 6; reused 9/29/2026 for the CSC 242 Group 2 project
 
 Purpose: Implements MyLinkedList, a singly linked list built from
 individually linked node objects (_Node). Supports insertion and
@@ -11,6 +11,11 @@ Lab 6 addition: get_at(index), which traverses to the given index and
 returns the stored object itself (not a copy), so the caller can read
 it or change it in place. MyHashTable uses this to walk each bucket
 chain and increment a FreqPair's count directly.
+
+Group project use: SessionHistory (session_history.py) logs every
+check as an entry in a MyLinkedList, adding each one with add_last and
+reading them back in order with get_count() and get_at(). MyStack also
+inherits from this class. No changes to this class were needed.
 
 Input: An optional Python list (or other iterable) of items passed to
 from_array; items, indices, and values passed to the various methods

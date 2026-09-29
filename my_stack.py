@@ -1,6 +1,6 @@
 """
 Author: AU75ZB
-Date: 9/10/2026
+Date: 9/10/2026 (Lab 4); docstrings revised 9/29/2026 for the CSC 242 Group 2 project
 
 Purpose: Implements MyStack, a LIFO (last-in, first-out) stack built by
 inheriting from MyLinkedList (Lab 3). The TOP of the stack is mapped to
@@ -10,6 +10,13 @@ pointer logic is reimplemented. Also provides is_empty_stack, get_count
 (delegating to the inherited count), deep-copy support through the
 inherited copy_list, and a __str__ that prints TOP to BOTTOM using only
 the stack interface plus a temporary MyStack to restore order.
+
+Group project use: included as part of the shared base classes. The
+bracket checker uses MyArrayStack, but MyStack offers the same
+interface (push, pop, get_top, is_empty_stack), so either stack could
+be used. For the group project, method docstrings were revised to
+describe behavior, and a required comment on why deep copy matters was
+added.
 
 Input: No console input. The test driver (test_my_stack.py) constructs
 MyStack objects and passes integer values to push; the other methods

@@ -1,6 +1,6 @@
 """
 Author: AU75ZB
-Date: 9/10/2026
+Date: 9/10/2026 (Lab 4); docstrings revised 9/29/2026 for the CSC 242 Group 2 project
 
 Purpose: Implements MyArrayStack, a LIFO (last-in, first-out) stack
 built by inheriting from MyArrayList (Lab 2). The TOP of the stack is
@@ -10,6 +10,11 @@ and get_top reuse the O(1) end operations append / delete_at(count - 1)
 reimplemented, and self._array is never touched directly. push goes
 through the inherited append(), so MyArrayList's capacity-doubling
 still fires correctly when the stack grows past its starting capacity.
+
+Group project use: check_brackets (bracket_checker.py) uses a
+MyArrayStack to hold the brackets that are open but not yet closed,
+each stored as a (bracket, line_number, column) tuple. For the group
+project, method docstrings were revised to describe behavior.
 
 Input: No console input. The test driver (test_my_stack.py) constructs
 MyArrayStack objects (optionally with a starting capacity) and passes

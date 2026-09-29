@@ -1,6 +1,6 @@
 """
 Author: AU75ZB
-Date: 8/24/2026
+Date: 8/24/2026 (Lab 2); reused 9/29/2026 for the CSC 242 Group 2 project
 
 Purpose: Implements MyArrayList, an array-based list built from scratch
 on top of a fixed-capacity backing Python list. Supports manual
@@ -9,6 +9,11 @@ deep copying (including a safe self-copy case), sequential search,
 selection sort, and operator overloading for += and + and str().
 Also includes binary_search, the Creative Final Feature, which
 searches an already-sorted list in O(log n) time.
+
+Group project use: TextBuffer (text_buffer.py) stores each line of the
+text being checked in a MyArrayList, and SessionHistory saves a deep
+copy of those lines (via copy_list) with every check. No changes to
+this class were needed.
 
 Input: An optional starting capacity (int) for the constructor; items,
 indices, and values passed to the various methods (append, insert_at,
