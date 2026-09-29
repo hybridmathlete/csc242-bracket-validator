@@ -61,6 +61,22 @@ class MyStack(MyLinkedList):
     # would need circular indexing.
     # -----------------------------------------------------------------
 
+    # -----------------------------------------------------------------
+    # Required comment -- Why deep copy matters (object independence)
+    #
+    # When a stack is copied, copy_list (inherited from MyLinkedList)
+    # creates new nodes for the copy, so the original and the copy each
+    # have their own nodes. This keeps the two stacks independent.
+    #
+    # If the two stacks shared nodes instead, a change to one could
+    # quietly affect the other. For example, pushing or popping on one
+    # stack might add or remove values the other stack can see, and its
+    # count might no longer match the values it actually holds. Methods
+    # like get_count, get_top, and __str__ would then return results
+    # that don't match what was pushed, and nothing would signal that
+    # anything went wrong. Giving each copy its own nodes avoids this.
+    # -----------------------------------------------------------------
+
     def __init__(self):
         '''
         Precondition: none.
