@@ -1,0 +1,74 @@
+CSC 242 Group 2 - Session History Test Driver
+
+==============================
+New history
+==============================
+Expected count: 0 | Actual: 0
+Expected is_empty: True | Actual: True
+Expected summary: No checks yet. | Actual: No checks yet.
+Expected detail(1): No check #1. | Actual: No check #1.
+
+==============================
+add_check
+==============================
+Expected returned entry number: 1 | Actual: 1
+Expected returned entry number: 2 | Actual: 2
+Expected count: 2 | Actual: 2
+Expected is_empty: False | Actual: False
+
+==============================
+get_entry
+==============================
+Expected get_entry(1) label: typed text | Actual: typed text
+Expected get_entry(2) label: samples/mismatch.py | Actual: samples/mismatch.py
+Expected get_entry(3): None | Actual: None
+Expected get_entry(0): None | Actual: None
+
+==============================
+Saved lines are a deep copy
+==============================
+Expected saved line of #1: (ok) | Actual: (ok)
+
+==============================
+get_summary
+==============================
+Expected:
+#1  typed text (1 lines)  PASS - All brackets are balanced
+#2  samples/mismatch.py (2 lines)  FAIL - Mismatch at line 2, col 23: expected ')' but found ']'
+Actual:
+#1  typed text (1 lines)  PASS - All brackets are balanced
+#2  samples/mismatch.py (2 lines)  FAIL - Mismatch at line 2, col 23: expected ')' but found ']'
+
+==============================
+format_detail (failed check)
+==============================
+Expected:
+Check #2: samples/mismatch.py
+  1 | def f(x):
+  2 |     return [x * (2 + 3]
+                            ^
+FAIL - Mismatch at line 2, col 23: expected ')' but found ']'
+Actual:
+Check #2: samples/mismatch.py
+  1 | def f(x):
+  2 |     return [x * (2 + 3]
+                            ^
+FAIL - Mismatch at line 2, col 23: expected ')' but found ']'
+
+==============================
+format_detail (passed check -- no ^ marker)
+==============================
+Expected:
+Check #1: typed text
+  1 | (ok)
+PASS - All brackets are balanced
+Actual:
+Check #1: typed text
+  1 | (ok)
+PASS - All brackets are balanced
+
+==============================
+clear
+==============================
+Expected count: 0 | Actual: 0
+Numbering restarts -- Expected entry number: 1 | Actual: 1
