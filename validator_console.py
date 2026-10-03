@@ -96,20 +96,19 @@ def check_file(history):
 
 
 def view_detail(history):
-    # ASSIGNED TO: Andrew
-    #
-    # Precondition: history is a SessionHistory.
-    # Postcondition: If the history is empty, prints "No checks yet.".
-    # Otherwise asks for a check number and prints
-    # history.format_detail(number). Input that is not a whole number
-    # prints "Please enter a whole number." -- the program must never
-    # crash on bad input.
-    #
-    # HINT: str.isdigit() tells you whether int() is safe to call.
-
-    # TODO (Andrew): Replace this comment block with your own
-    # docstring, then implement the function below.
-    pass
+    '''
+    Precondition: history is a SessionHistory.
+    Postcondition: Reads a check number and prints that check in
+    detail. Prints an error for input that is not a whole number.
+    '''
+    if history.is_empty():
+        print("No checks yet.")
+        return
+    choice = input("Check number: ").strip()
+    if not choice.isdigit():
+        print("Please enter a whole number.")
+        return
+    print(history.format_detail(int(choice)))
 
 
 def main():
