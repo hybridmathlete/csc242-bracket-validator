@@ -1,5 +1,6 @@
-# csc242-bracket-validator
-CSC 242 Group 2 — Bracket &amp; Syntax Validator (MyArrayList + MyArrayStack + MyLinkedList)
+# Bracket & Syntax Validator
+
+CSC 242 Python Data Structures (Oakton College) · Group Programming Assignment, Option 3 · Group 2
 
 ## What it does
 
