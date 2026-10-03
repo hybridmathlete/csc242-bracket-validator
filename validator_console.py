@@ -1,40 +1,28 @@
 """
-Author: [Your Name]
-Date: [Today's Date]
+Author: AU75ZB
+Date: 10/2/2026
 
-Purpose: [Describe what this program does]
+Purpose: This is the main program. It is where the three structures
+become one program. This program ties the three modules together into one
+interactive console:
+  TextBuffer (MyArrayList of lines)
+    -> check_brackets (MyArrayStack of open brackets)
+    -> SessionHistory (MyLinkedList of past checks)
+Every check the user runs is stored in the history, and any past check
+can be re-displayed with a ^ marker under the problem.
 
-Input: [Describe expected input]
+Input: Menu choices typed at the console; text typed or pasted line by
+line (finished with a line containing only END); or a file name.
 
-Output: [Describe expected output]
+Output: The result of each check, the session history, and detailed
+views of past checks, printed to the console.
 """
-
-# =====================================================================
-# ASSIGNED TO: Andrew Gause (agause7975)
-# BRANCH:      feature-console-menu
-# REVIEWER:    Ramina Daood (approves the PR)
-# DUE:         PR opened by Sat 10/3 (you can write and test it
-#              against teammates' branches as they land)
-# RUN WITH:    python3 validator_console.py
-#
-# This is the MAIN PROGRAM. It is where the three structures become one
-# program -- the part the rubric's "correct integration" (12 pts) looks
-# at hardest. The data flows through all three:
-#
-#   TextBuffer          -> check_brackets        -> SessionHistory
-#   (MyArrayList of        (MyArrayStack of         (MyLinkedList of
-#    lines)                 open brackets)           past checks)
-#
-# The console itself should contain NO bracket logic and NO list
-# logic -- it only calls the other modules' public methods.
-# =====================================================================
 
 from text_buffer import TextBuffer
 from bracket_checker import check_brackets
 from session_history import SessionHistory
 
 
-# ================= GIVEN: DO NOT MODIFY =================
 END_MARKER = "END"
 
 MENU = """
@@ -45,9 +33,6 @@ MENU = """
 4) View a past check in detail
 5) Clear history
 6) Quit"""
-
-
-# ================= YOUR IMPLEMENTATION =================
 
 
 def run_check(buffer, label, history):
@@ -84,8 +69,8 @@ def check_typed_text(history):
 def check_file(history):
     '''
     Precondition: history is a SessionHistory.
-    Postcondition: If the file cannot be read it prints an error. Otherwise,
-    it reads a file name, loads and checks the file, and logs the result.
+    Postcondition: It reads a file name, loads and checks the file,
+    and logs the result. If the file cannot be read it prints an error.
     '''
     file_name = input("File name: ").strip()
     buffer = TextBuffer()
@@ -112,24 +97,30 @@ def view_detail(history):
 
 
 def main():
-    # ASSIGNED TO: Andrew
-    #
-    # Precondition: none.
-    # Postcondition: Creates ONE SessionHistory for the whole session
-    # and runs the menu loop until the user chooses 6. Choices:
-    #   1 -> check_typed_text     2 -> check_file
-    #   3 -> print history.get_summary()
-    #   4 -> view_detail          5 -> history.clear(), then print
-    #                                  "History cleared."
-    #   6 -> leave the loop, then print "Goodbye!"
-    #   anything else -> print "Invalid choice."
-    #
-    # HINT: print(MENU), then input("Choose 1-6: ").strip(). Keep the
-    # history OUTSIDE the loop, or it will be emptied every time.
-
-    # TODO (Andrew): Replace this comment block with your own
-    # docstring, then implement the function below.
-    pass
+    '''
+    Precondition: none.
+    Postcondition: Creates one history for the whole session and
+    runs each menu option on it until the user quits.
+    '''
+    history = SessionHistory()
+    choice = ""
+    while choice != "6":
+        print(MENU)
+        choice = input("Choose 1-6: ").strip()
+        if choice == "1":
+            check_typed_text(history)
+        elif choice == "2":
+            check_file(history)
+        elif choice == "3":
+            print(history.get_summary())
+        elif choice == "4":
+            view_detail(history)
+        elif choice == "5":
+            history.clear()
+            print("History cleared.")
+        elif choice != "6":
+            print("Invalid choice.")
+    print("Goodbye!")
 
 
 if __name__ == "__main__":
