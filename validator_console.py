@@ -51,21 +51,15 @@ MENU = """
 
 
 def run_check(buffer, label, history):
-    # ASSIGNED TO: Andrew
-    #
-    # Precondition: buffer is a loaded TextBuffer; label is a string;
-    # history is a SessionHistory.
-    # Postcondition: Checks the buffer's lines, logs the result in
-    # history, and prints "Check #<n>: <result>".
-    #
-    # HINT: Three steps, one per module: check_brackets(...) on the
-    # buffer's MyArrayList, history.add_check(...) (it RETURNS the new
-    # entry, which has check_number), then print. Options 1 and 2 both
-    # end by calling this, so the pipeline lives in exactly one place.
-
-    # TODO (Andrew): Replace this comment block with your own
-    # docstring, then implement the function below.
-    pass
+    '''
+    Precondition: buffer is a loaded TextBuffer; label is a string;
+    history is a SessionHistory.
+    Postcondition: Checks the buffer's lines, logs the result in
+    history, and prints the result with its check number.
+    '''
+    result = check_brackets(buffer.get_lines())
+    entry = history.add_check(label, buffer.get_lines(), result)
+    print(f"Check #{entry.check_number}: {result}")
 
 
 def check_typed_text(history):
