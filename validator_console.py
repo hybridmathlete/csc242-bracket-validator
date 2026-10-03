@@ -63,37 +63,36 @@ def run_check(buffer, label, history):
 
 
 def check_typed_text(history):
-    # ASSIGNED TO: Andrew
-    #
-    # Precondition: history is a SessionHistory.
-    # Postcondition: Prints instructions, reads lines with input()
-    # until a line equal to END_MARKER, then checks and logs them with
-    # the label "typed text". If no lines were entered, prints
-    # "No text entered." and logs nothing.
-    #
-    # HINT: Build a new TextBuffer and add_line() each typed line.
-    # A while loop that reads one line before the loop and one at the
-    # bottom of the loop avoids adding "END" itself.
-
-    # TODO (Andrew): Replace this comment block with your own
-    # docstring, then implement the function below.
-    pass
+    '''
+    Precondition: history is a SessionHistory.
+    Postcondition: Reads lines until END, then checks and logs them.
+    Nothing is logged if no lines were entered.
+    '''
+    print(f"Type your text. Enter {END_MARKER} on its own line "
+          "to finish.")
+    buffer = TextBuffer()
+    line = input()
+    while line != END_MARKER:
+        buffer.add_line(line)
+        line = input()
+    if buffer.get_line_count() == 0:
+        print("No text entered.")
+        return
+    run_check(buffer, "typed text", history)
 
 
 def check_file(history):
-    # ASSIGNED TO: Andrew
-    #
-    # Precondition: history is a SessionHistory.
-    # Postcondition: Asks for a file name, loads and checks the file,
-    # and logs it with the file name as its label. If the file cannot
-    # be read, prints "Could not read '<file name>'." and logs nothing.
-    #
-    # HINT: TextBuffer.load_file() returns False on failure -- use
-    # that instead of your own try / except.
-
-    # TODO (Andrew): Replace this comment block with your own
-    # docstring, then implement the function below.
-    pass
+    '''
+    Precondition: history is a SessionHistory.
+    Postcondition: If the file cannot be read it prints an error. Otherwise,
+    it reads a file name, loads and checks the file, and logs the result.
+    '''
+    file_name = input("File name: ").strip()
+    buffer = TextBuffer()
+    if not buffer.load_file(file_name):
+        print(f"Could not read '{file_name}'.")
+        return
+    run_check(buffer, file_name, history)
 
 
 def view_detail(history):
