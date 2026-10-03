@@ -1,40 +1,28 @@
 """
-Author: [Your Name]
-Date: [Today's Date]
+Author: AU75ZB
+Date: 10/2/2026
 
-Purpose: [Describe what this program does]
+Purpose: This is the main program. It is where the three structures
+become one program. This program ties the three modules together into one
+interactive console:
+  TextBuffer (MyArrayList of lines)
+    -> check_brackets (MyArrayStack of open brackets)
+    -> SessionHistory (MyLinkedList of past checks)
+Every check the user runs is stored in the history, and any past check
+can be re-displayed with a ^ marker under the problem.
 
-Input: [Describe expected input]
+Input: Menu choices typed at the console; text typed or pasted line by
+line (finished with a line containing only END); or a file name.
 
-Output: [Describe expected output]
+Output: The result of each check, the session history, and detailed
+views of past checks, printed to the console.
 """
-
-# =====================================================================
-# ASSIGNED TO: Andrew Gause (agause7975)
-# BRANCH:      feature-console-menu
-# REVIEWER:    Ramina Daood (approves the PR)
-# DUE:         PR opened by Sat 10/3 (you can write and test it
-#              against teammates' branches as they land)
-# RUN WITH:    python3 validator_console.py
-#
-# This is the MAIN PROGRAM. It is where the three structures become one
-# program -- the part the rubric's "correct integration" (12 pts) looks
-# at hardest. The data flows through all three:
-#
-#   TextBuffer          -> check_brackets        -> SessionHistory
-#   (MyArrayList of        (MyArrayStack of         (MyLinkedList of
-#    lines)                 open brackets)           past checks)
-#
-# The console itself should contain NO bracket logic and NO list
-# logic -- it only calls the other modules' public methods.
-# =====================================================================
 
 from text_buffer import TextBuffer
 from bracket_checker import check_brackets
 from session_history import SessionHistory
 
 
-# ================= GIVEN: DO NOT MODIFY =================
 END_MARKER = "END"
 
 MENU = """
@@ -47,97 +35,92 @@ MENU = """
 6) Quit"""
 
 
-# ================= YOUR IMPLEMENTATION =================
-
-
 def run_check(buffer, label, history):
-    # ASSIGNED TO: Andrew
-    #
-    # Precondition: buffer is a loaded TextBuffer; label is a string;
-    # history is a SessionHistory.
-    # Postcondition: Checks the buffer's lines, logs the result in
-    # history, and prints "Check #<n>: <result>".
-    #
-    # HINT: Three steps, one per module: check_brackets(...) on the
-    # buffer's MyArrayList, history.add_check(...) (it RETURNS the new
-    # entry, which has check_number), then print. Options 1 and 2 both
-    # end by calling this, so the pipeline lives in exactly one place.
-
-    # TODO (Andrew): Replace this comment block with your own
-    # docstring, then implement the function below.
-    pass
+    '''
+    Precondition: buffer is a loaded TextBuffer; label is a string;
+    history is a SessionHistory.
+    Postcondition: Checks the buffer's lines, logs the result in
+    history, and prints the result with its check number.
+    '''
+    result = check_brackets(buffer.get_lines())
+    entry = history.add_check(label, buffer.get_lines(), result)
+    print(f"Check #{entry.check_number}: {result}")
 
 
 def check_typed_text(history):
-    # ASSIGNED TO: Andrew
-    #
-    # Precondition: history is a SessionHistory.
-    # Postcondition: Prints instructions, reads lines with input()
-    # until a line equal to END_MARKER, then checks and logs them with
-    # the label "typed text". If no lines were entered, prints
-    # "No text entered." and logs nothing.
-    #
-    # HINT: Build a new TextBuffer and add_line() each typed line.
-    # A while loop that reads one line before the loop and one at the
-    # bottom of the loop avoids adding "END" itself.
-
-    # TODO (Andrew): Replace this comment block with your own
-    # docstring, then implement the function below.
-    pass
+    '''
+    Precondition: history is a SessionHistory.
+    Postcondition: Reads lines until END, then checks and logs them.
+    Nothing is logged if no lines were entered.
+    '''
+    print(f"Type your text. Enter {END_MARKER} on its own line "
+          "to finish.")
+    buffer = TextBuffer()
+    line = input()
+    while line != END_MARKER:
+        buffer.add_line(line)
+        line = input()
+    if buffer.get_line_count() == 0:
+        print("No text entered.")
+        return
+    run_check(buffer, "typed text", history)
 
 
 def check_file(history):
-    # ASSIGNED TO: Andrew
-    #
-    # Precondition: history is a SessionHistory.
-    # Postcondition: Asks for a file name, loads and checks the file,
-    # and logs it with the file name as its label. If the file cannot
-    # be read, prints "Could not read '<file name>'." and logs nothing.
-    #
-    # HINT: TextBuffer.load_file() returns False on failure -- use
-    # that instead of your own try / except.
-
-    # TODO (Andrew): Replace this comment block with your own
-    # docstring, then implement the function below.
-    pass
+    '''
+    Precondition: history is a SessionHistory.
+    Postcondition: It reads a file name, loads and checks the file,
+    and logs the result. If the file cannot be read it prints an error.
+    '''
+    file_name = input("File name: ").strip()
+    buffer = TextBuffer()
+    if not buffer.load_file(file_name):
+        print(f"Could not read '{file_name}'.")
+        return
+    run_check(buffer, file_name, history)
 
 
 def view_detail(history):
-    # ASSIGNED TO: Andrew
-    #
-    # Precondition: history is a SessionHistory.
-    # Postcondition: If the history is empty, prints "No checks yet.".
-    # Otherwise asks for a check number and prints
-    # history.format_detail(number). Input that is not a whole number
-    # prints "Please enter a whole number." -- the program must never
-    # crash on bad input.
-    #
-    # HINT: str.isdigit() tells you whether int() is safe to call.
-
-    # TODO (Andrew): Replace this comment block with your own
-    # docstring, then implement the function below.
-    pass
+    '''
+    Precondition: history is a SessionHistory.
+    Postcondition: Reads a check number and prints that check in
+    detail. Prints an error for input that is not a whole number.
+    '''
+    if history.is_empty():
+        print("No checks yet.")
+        return
+    choice = input("Check number: ").strip()
+    if not choice.isdigit():
+        print("Please enter a whole number.")
+        return
+    print(history.format_detail(int(choice)))
 
 
 def main():
-    # ASSIGNED TO: Andrew
-    #
-    # Precondition: none.
-    # Postcondition: Creates ONE SessionHistory for the whole session
-    # and runs the menu loop until the user chooses 6. Choices:
-    #   1 -> check_typed_text     2 -> check_file
-    #   3 -> print history.get_summary()
-    #   4 -> view_detail          5 -> history.clear(), then print
-    #                                  "History cleared."
-    #   6 -> leave the loop, then print "Goodbye!"
-    #   anything else -> print "Invalid choice."
-    #
-    # HINT: print(MENU), then input("Choose 1-6: ").strip(). Keep the
-    # history OUTSIDE the loop, or it will be emptied every time.
-
-    # TODO (Andrew): Replace this comment block with your own
-    # docstring, then implement the function below.
-    pass
+    '''
+    Precondition: none.
+    Postcondition: Creates one history for the whole session and
+    runs each menu option on it until the user quits.
+    '''
+    history = SessionHistory()
+    choice = ""
+    while choice != "6":
+        print(MENU)
+        choice = input("Choose 1-6: ").strip()
+        if choice == "1":
+            check_typed_text(history)
+        elif choice == "2":
+            check_file(history)
+        elif choice == "3":
+            print(history.get_summary())
+        elif choice == "4":
+            view_detail(history)
+        elif choice == "5":
+            history.clear()
+            print("History cleared.")
+        elif choice != "6":
+            print("Invalid choice.")
+    print("Goodbye!")
 
 
 if __name__ == "__main__":
