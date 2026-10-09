@@ -8,13 +8,6 @@ Input: Sample files containing different bracket cases.
 Output: Expected and actual results, test status, and session history.
 """
 
-# =====================================================================
-# ASSIGNED TO: Ramina Daood (rdaood8933)
-# BRANCH:      test-end-to-end
-# REVIEWER:    Benjamin Clark (approves the PR)
-# RUN WITH:    python3 test_end_to_end.py
-# =====================================================================
-
 from text_buffer import TextBuffer
 from bracket_checker import check_brackets
 from session_history import SessionHistory

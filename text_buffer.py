@@ -13,24 +13,6 @@ Output: Individual lines, the line count, the MyArrayList of lines, and
 a numbered listing of the text.
 """
 
-# =====================================================================
-# ASSIGNED TO: Benjamin Clark (bclark2799)
-# BRANCH:      feature-text-buffer
-# REVIEWER:    Andrew Gause (approves the PR)
-# DUE:         PR opened by Sat 10/3
-# TEST WITH:   python3 test_text_buffer.py
-#              (compare to expected_output/test_text_buffer.txt)
-#
-# TextBuffer stores a block of text as a MyArrayList of lines -- one
-# string per line, with NO newline characters. This is the MyArrayList
-# part of the project.
-#
-# IMPORTANT -- line numbers:
-# - The USER sees 1-based line numbers (the first line is line 1).
-# - The MyArrayList underneath is 0-based (the first line is index 0).
-# - So line n is stored at index n - 1. Every method that takes a
-#   line_number must convert it.
-# =====================================================================
 from my_array_list import MyArrayList
 
 
