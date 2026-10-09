@@ -1,12 +1,10 @@
 """
-Author: [Your Name]
-Date: [Today's Date]
-
-Purpose: [Describe what this program does]
-
-Input: [Describe expected input]
-
-Output: [Describe expected output]
+Author: 9G7WRQ
+Date: 10/6/2026
+Purpose: Stores and displays the history of bracket checks 
+during a session.
+Input: Check labels, source-code lines, and CheckResult objects.
+Output: History entries, check counts, summaries, and formatted details.
 """
 
 # =====================================================================
@@ -32,12 +30,7 @@ Output: [Describe expected output]
 from my_linked_list import MyLinkedList
 from my_array_list import MyArrayList
 
-
 # ================= GIVEN: DO NOT MODIFY =================
-#
-# HistoryEntry bundles everything needed to re-display one past check:
-# its number, a label (a file name or "typed text"), the lines that
-# were checked (a MyArrayList of strings), and the CheckResult.
 class HistoryEntry:
     """Bundles one past check. GIVEN -- do not modify."""
 
@@ -47,135 +40,141 @@ class HistoryEntry:
         self.lines = lines
         self.result = result
 
-
 # ================= YOUR IMPLEMENTATION =================
 
-
 class SessionHistory:
-
     def __init__(self):
-        # ASSIGNED TO: Ramina
-        #
-        # Precondition: none.
-        # Postcondition: Creates an empty history. The first check
-        # added will be check #1.
-        #
-        # HINT: Two attributes: self._entries (a new MyLinkedList) and
-        # self._next_number (the number the NEXT check will get).
-
-        # TODO (Ramina): Replace this comment block with your own
-        # docstring, then implement the method below.
-        pass
+        """
+        Purpose: Creates an empty session history.
+        Precondition: None.
+        Postcondition: The history is empty and the next check number
+        is set to 1.
+        """
+        self._entries = MyLinkedList()
+        self._next_number = 1
 
     def add_check(self, label, lines, result):
-        # ASSIGNED TO: Ramina
-        #
-        # Precondition: label is a string; lines is a MyArrayList of
-        # strings; result is a CheckResult.
-        # Postcondition: Adds a new HistoryEntry to the END of the log,
-        # numbered with the next check number, and RETURNS that entry.
-        # The lines must be saved as a DEEP COPY, so that if the caller
-        # changes its own MyArrayList later, the saved history does not
-        # change.
-        #
-        # HINT:
-        # - Deep copy: create a new MyArrayList and call its copy_list()
-        #   with the caller's list (see my_array_list.py).
-        # - Build the HistoryEntry, add_last() it, then move
-        #   self._next_number forward.
-        #
-        # WATCH OUT: copy_list() on an EMPTY list leaves the copy with
-        # capacity 0, so never append() to a saved copy afterward.
+        """
+        Purpose: Adds a bracket check to the end of the session history.
+        Precondition: label is a string, lines is a MyArrayList of
+        strings, and result is a CheckResult.
+        Postcondition: A new HistoryEntry is added to the end of the
+        history with the next check number. The lines are saved as a
+        deep copy, the next check number is increased by 1, and the
+        new HistoryEntry is returned.
+        """
+        saved_lines = MyArrayList()
+        saved_lines.copy_list(lines)
 
-        # TODO (Ramina): Replace this comment block with your own
-        # docstring, then implement the method below.
-        return None
+        entry = HistoryEntry(
+            self._next_number,
+            label,
+            saved_lines,
+            result
+        )
+
+        self._entries.add_last(entry)
+        self._next_number += 1
+
+        return entry
 
     def get_count(self):
-        # ASSIGNED TO: Ramina
-        #
-        # Precondition: none.
-        # Postcondition: Returns how many checks are in the log.
-
-        # TODO (Ramina): Replace this comment block with your own
-        # docstring, then implement the method below.
-        return 0
+        """
+        Purpose: Gets the number of checks stored in the session history.
+        Precondition: None.
+        Postcondition: Returns the number of checks currently stored.
+        """
+        return self._entries.get_count()
 
     def is_empty(self):
-        # ASSIGNED TO: Ramina
-        #
-        # Precondition: none.
-        # Postcondition: Returns True if no checks have been logged.
-
-        # TODO (Ramina): Replace this comment block with your own
-        # docstring, then implement the method below.
-        return True
+        """
+        Purpose: Determines whether the session history is empty.
+        Precondition: None.
+        Postcondition: Returns True if no checks are stored; otherwise,
+        returns False.
+        """
+        return self._entries.is_empty()
 
     def get_entry(self, check_number):
-        # ASSIGNED TO: Ramina
-        #
-        # Precondition: check_number is an integer.
-        # Postcondition: Returns the HistoryEntry whose check_number
-        # matches, or None if there is no such check.
-        #
-        # HINT: Walk the list with get_count() + get_at(index) (the same
-        # pattern MyHashTable used in Lab 6) and compare
-        # entry.check_number. Do not assume check #n is at index n - 1.
+        """
+        Purpose: Finds a history entry using its check number.
+        Precondition: check_number is an integer.
+        Postcondition: Returns the HistoryEntry with the matching check
+        number, or None if no matching entry exists.
+        """
+        for index in range(self._entries.get_count()):
+            entry = self._entries.get_at(index)
 
-        # TODO (Ramina): Replace this comment block with your own
-        # docstring, then implement the method below.
+            if entry.check_number == check_number:
+                return entry
+
         return None
 
     def get_summary(self):
-        # ASSIGNED TO: Ramina
-        #
-        # Precondition: none.
-        # Postcondition: Returns one row per check, oldest first, rows
-        # separated by "\n" (no trailing newline). Returns
-        # "No checks yet." when the log is empty. Row format:
-        #     "#<number>  <label> (<line count> lines)  <result>"
-        # Example:
-        #     "#2  samples/mismatch.py (2 lines)  FAIL - Mismatch at ..."
-        #
-        # HINT: <result> is just str(entry.result) -- CheckResult's
-        # __str__ already adds "PASS - " / "FAIL - ". Note the TWO
-        # spaces after the number and before the result.
+        """
+        Purpose: Creates a summary of all checks in the session history.
+        Precondition: None.
+        Postcondition: Returns one summary row for each check in
+        oldest-to-newest order, separated by newline characters. If the
+        history is empty, returns "No checks yet.".
+        """
+        if self.is_empty():
+            return "No checks yet."
 
-        # TODO (Ramina): Replace this comment block with your own
-        # docstring, then implement the method below.
-        return ""
+        rows = []
+
+        for index in range(self._entries.get_count()):
+            entry = self._entries.get_at(index)
+
+            row = (
+                f"#{entry.check_number}  "
+                f"{entry.label} ({entry.lines.get_count()} lines)  "
+                f"{entry.result}"
+            )
+
+            rows.append(row)
+
+        return "\n".join(rows)
 
     def format_detail(self, check_number):
-        # ASSIGNED TO: Ramina
-        #
-        # Precondition: check_number is an integer.
-        # Postcondition: Returns a multi-line string that re-displays
-        # one past check, or "No check #<n>." if it does not exist.
-        # Format:
-        #     Check #2: samples/mismatch.py
-        #       1 | def f(x):
-        #       2 |     return [x * (2 + 3]
-        #                                 ^
-        #     FAIL - Mismatch at line 2, col 23: expected ')' but found ']'
-        # - First row: "Check #<number>: <label>"
-        # - Then every saved line as f"{line_number:>3} | {text}"
-        # - For a FAILED check only: directly under the problem line,
-        #   a row with a "^" under the problem column.
-        # - Last row: str(entry.result)
-        #
-        # HINT: The prefix "  1 | " is 6 characters wide, so the caret
-        # row is (6 + column - 1) spaces followed by "^".
+        """
+        Purpose: Formats one saved check with its source lines and result.
+        Precondition: check_number is an integer.
+        Postcondition: Returns a multi-line string containing the selected
+        check's number, label, saved lines, and result. A caret is included
+        under the problem column when the check failed. If the check does
+        not exist, returns "No check #<n>.".
+        """
+        entry = self.get_entry(check_number)
 
-        # TODO (Ramina): Replace this comment block with your own
-        # docstring, then implement the method below.
-        return ""
+        if entry is None:
+            return f"No check #{check_number}."
+
+        rows = [f"Check #{entry.check_number}: {entry.label}"]
+
+        for index in range(entry.lines.get_count()):
+            line_number = index + 1
+            line = entry.lines.get(index)
+
+            rows.append(f"{line_number:>3} | {line}")
+
+            if (
+                not entry.result.is_balanced
+                and line_number == entry.result.line_number
+            ):
+                spaces = 6 + entry.result.column - 1
+                rows.append(" " * spaces + "^")
+
+        rows.append(str(entry.result))
+
+        return "\n".join(rows)
 
     def clear(self):
-        # ASSIGNED TO: Ramina
-        #
-        # Precondition: none.
-        # Postcondition: Removes every entry. Numbering restarts at 1.
-
-        # TODO (Ramina): Replace this comment block with your own
-        # docstring, then implement the method below.
-        pass
+        """
+        Purpose: Removes all checks from the session history.
+        Precondition: None.
+        Postcondition: The history is empty and the next check number
+        is reset to 1.
+        """
+        self._entries.clear()
+        self._next_number = 1
