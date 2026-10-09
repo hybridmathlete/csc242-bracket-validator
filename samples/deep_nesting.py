@@ -1,0 +1,6 @@
+def nested():
+    value = (
+        {
+            "items": [1, 2, 3]
+        }
+    )
