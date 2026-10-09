@@ -2,18 +2,16 @@
 Author: 9G7WRQ
 Date: 10/7/2026
 
-Purpose: Tests the complete bracket validator pipeline using sample files.
-Input: Sample source-code files containing different bracket cases.
-Output: Expected and actual bracket-check results, followed by the
-session history created by the tests.
+Purpose: Tests the file-validation pipeline by checking that TextBuffer,
+check_brackets, and SessionHistory work together.
+Input: Sample files containing different bracket cases.
+Output: Expected and actual results, test status, and session history.
 """
 
 # =====================================================================
 # ASSIGNED TO: Ramina Daood (rdaood8933)
 # BRANCH:      test-end-to-end
 # REVIEWER:    Benjamin Clark (approves the PR)
-# DUE:         PR opened by Sat 10/3; RUN IT TOGETHER in Session 2
-#              (Mon 10/5) once every branch is merged
 # RUN WITH:    python3 test_end_to_end.py
 # =====================================================================
 
@@ -31,22 +29,24 @@ def print_header(title):
 def run_file_case(file_name, expected, history):
     """
     Purpose: Runs one sample file through the complete validation
-    pipeline and stores the result in session history.
-    Precondition: file_name is a path to a sample file, expected is
-    the exact expected result string, and history is a SessionHistory.
-    Postcondition: The file is loaded, checked, and added to the
-    session history. The expected and actual results are printed.
+    pipeline and saves the result in session history.
+    Precondition: file_name is a sample file path, expected is the
+    expected result string, and history is a SessionHistory.
+    Postcondition: Loads and checks the file, saves the result in
+    history, and prints the expected and actual results. If the file
+    cannot be loaded, prints an error and does not save a check.
     """
 
     buffer = TextBuffer()
 
-    print(file_name)
+    print(f"\nFile: {file_name}")
 
     if not buffer.load_file(file_name):
         print(f"  Could not load {file_name}")
         return
 
     result = check_brackets(buffer.get_lines())
+    actual = str(result)
 
     history.add_check(
         file_name,
@@ -55,7 +55,12 @@ def run_file_case(file_name, expected, history):
     )
 
     print(f"  Expected: {expected}")
-    print(f"  Actual:   {result}")
+    print(f"  Actual:   {actual}")
+
+    if actual == expected:
+        print("  Test status: PASS")
+    else:
+        print("  Test status: FAIL")
 
 
 def main():
@@ -92,7 +97,7 @@ def main():
     print_header("Ramina's cases")
 
     run_file_case(
-        "samples/deep_nested.py",
+        "samples/deep_nesting.py",
         "PASS - All brackets are balanced",
         history
     )
@@ -104,13 +109,13 @@ def main():
     )
 
     run_file_case(
-        "samples/long_last_line.py",
+        "samples/last_line_error.py",
         "FAIL - Mismatch at line 8, col 18: expected ']' but found ')'",
         history
     )
 
     run_file_case(
-        "samples/string_bracket.py",
+        "samples/bracket_in_string.py",
         "FAIL - Unclosed '(' opened at line 2, col 10",
         history
     )
@@ -118,10 +123,11 @@ def main():
     print_header("History after all cases")
 
     expected_count = 8
+    actual_count = history.get_count()
 
     print(
         f"Expected history count: {expected_count} | "
-        f"Actual: {history.get_count()}"
+        f"Actual: {actual_count}"
     )
 
     print(history.get_summary())
