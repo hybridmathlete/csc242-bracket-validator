@@ -1,12 +1,17 @@
 """
-Author: [Your Name]
-Date: [Today's Date]
+Author: Benjamin Clark
+Date: October 4, 2026
 
-Purpose: [Describe what this program does]
+Purpose: Checks that every (, [ and { in a block of text is closed by
+the matching ), ] or } in the right order. A MyArrayStack holds the
+brackets that are open but not yet closed, so the most recently opened
+bracket must be the first one closed. The check stops at the first
+problem and reports its 1-based line and column.
 
-Input: [Describe expected input]
+Input: A MyArrayList of strings, one per line of text.
 
-Output: [Describe expected output]
+Output: A CheckResult for one of four outcomes: balanced, mismatch,
+unexpected closer, or unclosed opener.
 """
 
 # =====================================================================
@@ -53,79 +58,66 @@ CLOSERS = ")]}"
 
 
 def _is_opener(ch):
-    # ASSIGNED TO: Benjamin
-    #
-    # Precondition: ch is a single character.
-    # Postcondition: Returns True if ch is (, [, or {; False otherwise.
-    #
-    # HINT: The "in" operator works on strings.
-
-    # TODO (Benjamin): Replace this comment block with your own
-    # docstring, then implement the function below.
-    return False
+    """
+    Precondition: ch is a single character.
+    Postcondition: Returns True if ch is (, [, or {; False otherwise.
+    """
+    return ch in OPENERS
 
 
 def _is_closer(ch):
-    # ASSIGNED TO: Benjamin
-    #
-    # Precondition: ch is a single character.
-    # Postcondition: Returns True if ch is ), ], or }; False otherwise.
-
-    # TODO (Benjamin): Replace this comment block with your own
-    # docstring, then implement the function below.
-    return False
+    """
+    Precondition: ch is a single character.
+    Postcondition: Returns True if ch is ), ], or }; False otherwise.
+    """
+    return ch in CLOSERS
 
 
 def _matching_closer(opener):
-    # ASSIGNED TO: Benjamin
-    #
-    # Precondition: opener is one of (, [, {.
-    # Postcondition: Returns the closer that matches opener.
-    #
-    # HINT: Find opener's position in OPENERS (str.index), then return
-    # the character at the SAME position in CLOSERS.
-
-    # TODO (Benjamin): Replace this comment block with your own
-    # docstring, then implement the function below.
-    return ""
+    """
+    Precondition: opener is one of (, [, {.
+    Postcondition: Returns the closer that matches opener.
+    """
+    return CLOSERS[OPENERS.index(opener)]
 
 
 def check_brackets(lines):
-    # ASSIGNED TO: Benjamin
-    #
-    # Precondition: lines is a MyArrayList of strings (one per line).
-    # Postcondition: Returns a CheckResult. Scans every character of
-    # every line in order and STOPS at the first problem. For a failed
-    # check, line_number and column are where the problem is (for an
-    # unclosed opener: where that opener was opened). For a balanced
-    # check, line_number and column are both 0.
-    #
-    # HINT:
-    # - Create one MyArrayStack.
-    # - Outer loop over line indexes 0 .. lines.get_count() - 1
-    #   (lines.get(index) gives the string). Inner loop over the
-    #   character positions of that line. Convert BOTH to 1-based
-    #   numbers before you store or report them.
-    # - Opener: push a TUPLE (ch, line_number, column) -- you need the
-    #   position later if this opener is never closed.
-    # - Closer:
-    #     - Stack empty?  -> return the "Unexpected" CheckResult.
-    #     - Otherwise read the top tuple, e.g.
-    #           open_ch, open_line, open_col = stack.get_top()
-    #       If ch is not _matching_closer(open_ch) -> return the
-    #       "Mismatch" CheckResult. Otherwise pop() -- that pair is
-    #       done.
-    # - Any other character: ignore it.
-    # - After both loops: if the stack is not empty, return the
-    #   "Unclosed" CheckResult using the TOP tuple. Otherwise return
-    #   CheckResult(True, 0, 0, "All brackets are balanced").
-    #
-    # WATCH OUT:
-    # - pop() does NOT return a value in our MyArrayStack. Always call
-    #   get_top() FIRST, then pop().
-    # - get_top() on an EMPTY stack crashes -- check is_empty_stack()
-    #   before calling it.
+    """
+    Precondition: lines is a MyArrayList of strings (one per line).
+    Postcondition: Returns a CheckResult. Scans every character in order
+    and stops at the first problem. For a failed check, line_number and
+    column are where the problem is (for an unclosed opener, where it
+    was opened). For a balanced check, both are 0.
+    """
+    stack = MyArrayStack()
 
-    # TODO (Benjamin): Replace this comment block with your own
-    # docstring, then implement the function below.
-    return CheckResult(True, 0, 0, "")
+    for line_index in range(lines.get_count()):
+        line = lines.get(line_index)
+        line_number = line_index + 1
+        for char_index in range(len(line)):
+            ch = line[char_index]
+            column = char_index + 1
+            if _is_opener(ch):
+                stack.push((ch, line_number, column))
+            elif _is_closer(ch):
+                if stack.is_empty_stack():
+                    return CheckResult(
+                        False, line_number, column,
+                        f"Unexpected '{ch}' at line {line_number}, "
+                        f"col {column}: no bracket is open")
+                open_ch, open_line, open_col = stack.get_top()
+                expected = _matching_closer(open_ch)
+                if ch != expected:
+                    return CheckResult(
+                        False, line_number, column,
+                        f"Mismatch at line {line_number}, col {column}: "
+                        f"expected '{expected}' but found '{ch}'")
+                stack.pop()
+
+    if not stack.is_empty_stack():
+        open_ch, open_line, open_col = stack.get_top()
+        return CheckResult(
+            False, open_line, open_col,
+            f"Unclosed '{open_ch}' opened at line {open_line}, "
+            f"col {open_col}")
+    return CheckResult(True, 0, 0, "All brackets are balanced")
