@@ -1,38 +1,18 @@
 """
 Author: 9G7WRQ
 Date: 10/6/2026
-Purpose: Stores and displays the history of bracket checks 
+Purpose: Stores and displays the history of bracket checks
 during a session.
 Input: Check labels, source-code lines, and CheckResult objects.
 Output: History entries, check counts, summaries, and formatted details.
 """
 
-# =====================================================================
-# ASSIGNED TO: Ramina Daood (rdaood8933)
-# BRANCH:      feature-session-history
-# REVIEWER:    Benjamin Clark (approves the PR)
-# DUE:         PR opened by Sat 10/3
-# TEST WITH:   python3 test_session_history.py
-#              (compare to expected_output/test_session_history.txt)
-# NEEDS:       check_result.py finished (Andrew, merged by Wed 9/30)
-#
-# SessionHistory is the MyLinkedList part of the project: a log of
-# every bracket check run during one session. Each check is stored as
-# a HistoryEntry (GIVEN below) at the END of a MyLinkedList, so the log
-# reads oldest-to-newest. Check numbers start at 1.
-#
-# A linked list fits this job: the log only grows at the end
-# (add_last is O(1) because MyLinkedList keeps a reference to its last
-# node), it is always read in order, and it never needs a fixed
-# capacity.
-# =====================================================================
-
 from my_linked_list import MyLinkedList
 from my_array_list import MyArrayList
 
-# ================= GIVEN: DO NOT MODIFY =================
+
 class HistoryEntry:
-    """Bundles one past check. GIVEN -- do not modify."""
+    """Bundles everything needed to re-display one past check."""
 
     def __init__(self, check_number, label, lines, result):
         self.check_number = check_number
@@ -40,7 +20,6 @@ class HistoryEntry:
         self.lines = lines
         self.result = result
 
-# ================= YOUR IMPLEMENTATION =================
 
 class SessionHistory:
     def __init__(self):
